@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+// The methods that the Scheduling Service provides
+service SchedulingAPI {
+  rpc CreateCluster (Cluster) returns (ResponseWithCluster) {}  // Creates a new cluster of IoT devices
+  rpc ClusterState (Cluster) returns (ResponseWithCluster) {}  // Returns the cluster state of IoT devices
+  rpc RemoveCluster (Cluster) returns (Response) {}  // Removes an existing IoT device cluster
+  rpc SwarmManager (Empty) returns (ResponseWithManager) {}  // Returns the Docker Swarm Manager IP address and token to add a new worker
+}
+
+message Empty {
+}
+
+message ExposedPort {
+  uint32 published_port = 1;
+  uint32 target_port = 2;
+  string protocol = 3;
+}
+
+message Coordinates {
+  float latitude = 1;
+  float longitude = 2;
+}
+
+message Cluster {
+  string id = 1;
+  string image = 2;
+  string cloudlet_ip = 3;
+  string state = 4;
+  repeated ExposedPort exposed_ports = 5;
+  Coordinates coordinates = 6;
+}
+
+message Manager {
+  string address = 1;
+  string join_worker_token = 2;
+}
+
+message Response {
+  int32 code = 1;
+  string message = 2;
+}
+
+message ResponseWithCluster {
+  Response status = 1;
+  Cluster cluster = 2;
+}
+
+message ResponseWithManager {
+  Response status = 1;
+  Manager manager = 2;
+}
+
+
+// Cloudlets Service methods used by the Scheduling Service
+service CloudletsAPI {
+  rpc FindNearest (Cloudlet) returns (ResponseWithCloudletsList) {}  // Searches for nearby fog devices
+}
+
+message Cloudlet {
+  string id = 1;
+  double latitude = 10;
+  double longitude = 11;
+}
+
+message ResponseWithCloudletsList {
+  Response status = 1;
+  repeated Cloudlet cloudlets = 2;
+}
+
+
+// Images Service methods used by the Scheduling Service
+service ImagesAPI {
+  rpc Find (Image) returns (ResponseWithImage) {}  // Returns information about specified image of fog application
+}
+
+message Image {
+  string type = 1;
+  string name = 2;
+  int64 updated = 3;
+  repeated string tags = 4;
+  repeated string actions = 5;
+}
+
+message ResponseWithImage {
+  Response status = 1;
+  Image image = 2;
+}
