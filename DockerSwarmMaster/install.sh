@@ -2,7 +2,8 @@
 
 echo
 echo Docker Installation
-curl -sSL https://get.docker.com | sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+$DIR/docker_install.sh
 
 echo
 echo Opening insecure access to the Docker Engine via HTTP
@@ -17,7 +18,7 @@ sudo systemctl daemon-reload
 
 echo
 echo Adding Insecure Docker Registry
-read -p "Enter Docker Registry IP address or URL: " DOCKER_REGISTRY_IP
+read -p "Enter Docker Registry IP address or URL and port: " DOCKER_REGISTRY_IP
 { echo "{ \"insecure-registries\":[\"$DOCKER_REGISTRY_IP\"] }"; } | sudo tee /etc/docker/daemon.json
 
 echo
