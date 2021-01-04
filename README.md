@@ -43,3 +43,4 @@ To start the Docker Swarm Master node a machine running Ubuntu 20.04 is required
    ```
 
 
+**The reported project was supported by RFBR, research project No. 18-07-01224**
