@@ -1,4 +1,4 @@
 grpcio==1.28.1
-protobuf==3.11.3
+protobuf==3.15.0
 pymongo==3.10.1
 docker==4.2.0
